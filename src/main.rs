@@ -1,14 +1,19 @@
 use bevy::prelude::*;
 
-use crate::{core::core_plugin::CorePlugin, splashscreen::splashscreen_plugin::SplashScreenPlugin};
+use crate::{
+    core::core_plugin::CorePlugin, game_brief::game_brief_plugin::GameBriefplugin,
+    splashscreen::splashscreen_plugin::SplashScreenPlugin,
+};
 
 mod core;
+mod game_brief;
 mod splashscreen;
 
 #[derive(Default, States, Debug, Hash, PartialEq, Eq, Clone)]
 enum GameState {
-    #[default]
     SplashScreen,
+    #[default]
+    GameBrief,
 }
 
 fn main() {
@@ -20,7 +25,7 @@ fn main() {
             }),
             ..Default::default()
         }))
-        .add_plugins((SplashScreenPlugin, CorePlugin))
+        .add_plugins((SplashScreenPlugin, GameBriefplugin, CorePlugin))
         .init_state::<GameState>()
         .run();
 }

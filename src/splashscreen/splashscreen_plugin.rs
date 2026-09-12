@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::GameState;
+use crate::GameState::{self, SplashScreen};
 
 pub struct SplashScreenPlugin;
 
@@ -17,9 +17,13 @@ impl Plugin for SplashScreenPlugin {
             OnEnter(GameState::SplashScreen),
             (set_splash_background, spawn_splash_screen),
         )
-        .add_systems(Update, start_button_interactions.in_set(SplashScreenSet));
+        .add_systems(Update, start_button_interactions.in_set(SplashScreenSet))
+        .add_systems(OnExit(GameState::SplashScreen), cleanup_splashscreen);
     }
 }
+
+#[derive(Component)]
+struct SplashScreenComponent;
 
 fn spawn_splash_screen(mut commands: Commands) {
     commands.spawn((
@@ -31,6 +35,7 @@ fn spawn_splash_screen(mut commands: Commands) {
             position_type: PositionType::Absolute,
             ..Default::default()
         },
+        SplashScreenComponent,
         ZIndex(1),
         children![(
             Node {
@@ -58,6 +63,7 @@ fn splash_title() -> impl Bundle {
 
 fn set_splash_background(asset_server: Res<AssetServer>, mut commands: Commands) {
     commands.spawn((
+        SplashScreenComponent,
         Node {
             width: percent(100),
             height: percent(100),
@@ -119,8 +125,17 @@ fn start_button_interactions(
                 button_text.0 = Color::WHITE;
             }
             Interaction::Pressed => {
-                game_state.set(GameState::SplashScreen);
+                game_state.set(GameState::GameBrief);
             }
         }
+    }
+}
+
+fn cleanup_splashscreen(
+    mut commands: Commands,
+    splash_screen: Query<Entity, With<SplashScreenComponent>>,
+) {
+    for splash_entity in splash_screen {
+        commands.entity(splash_entity).despawn();
     }
 }

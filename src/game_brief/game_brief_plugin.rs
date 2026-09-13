@@ -1,11 +1,6 @@
 use bevy::prelude::*;
 
-use crate::{
-    GameState,
-    game_brief::{
-        dialog_box::dialog_box_plugin::DialogBoxPlugin, wizard::wizard_plugin::WizardPlugin,
-    },
-};
+use crate::{GameState, game_brief::dialog_box::dialog_box_plugin::DialogBoxPlugin};
 
 pub struct GameBriefplugin;
 

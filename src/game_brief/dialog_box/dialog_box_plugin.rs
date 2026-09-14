@@ -48,7 +48,11 @@ const TEXT_COLOR_GAME_BREIF: Color = Color::hsl(247.5, 0.706, 0.20);
 
 fn dialog_texts(game_fonts: &GameFonts) -> impl Bundle {
     children![
-        (text_helper_func("Welcome", px(30), game_fonts.kaisei_decol_bold.clone())),
+        (text_helper_func(
+            "Welcome Apprentice,",
+            px(30),
+            game_fonts.kaisei_decol_bold.clone()
+        )),
         (
             Node {
                 margin: UiRect {

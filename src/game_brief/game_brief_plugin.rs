@@ -1,13 +1,19 @@
 use bevy::prelude::*;
 
-use crate::{GameState, game_brief::dialog_box::dialog_box_plugin::DialogBoxPlugin};
+use crate::{
+    GameState,
+    game_brief::{
+        dialog_box::dialog_box_plugin::DialogBoxPlugin,
+        materials::materials_plugin::MaterialsPlugin,
+    },
+};
 
 pub struct GameBriefplugin;
 
 impl Plugin for GameBriefplugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::GameBrief), set_background)
-            .add_plugins((DialogBoxPlugin));
+            .add_plugins((DialogBoxPlugin, MaterialsPlugin));
     }
 }
 

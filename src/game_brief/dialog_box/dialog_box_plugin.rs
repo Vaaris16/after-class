@@ -1,13 +1,23 @@
-use bevy::{ecs::system::IntoResult, prelude::*};
+use bevy::{ecs::system::IntoResult, prelude::*, ui::debug::print_ui_layout_tree};
 
-use crate::{GameState, core::game_fonts::fonts::GameFonts};
+use crate::{
+    GameState, core::game_fonts::fonts::GameFonts,
+    game_brief::materials::materials_plugin::Materials,
+};
 
 pub struct DialogBoxPlugin;
 
 impl Plugin for DialogBoxPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::GameBrief), spawn_dialog_box);
+        app.add_systems(
+            OnEnter(GameState::GameBrief),
+            (spawn_dialog_box, assign_materials_to_user),
+        );
     }
+}
+
+fn assign_materials_to_user(mut materials: ResMut<Materials>) {
+    materials.assign_materials();
 }
 
 fn spawn_dialog_box(

@@ -2,7 +2,9 @@ use bevy::prelude::*;
 
 use crate::{
     core::game_fonts::fonts::GameFonts,
-    game_brief::materials::materials_plugin::{MaterialImagePath, Materials},
+    game_brief::materials::{
+        material_image_path::MaterialImagePath, materials_resource::Materials,
+    },
 };
 
 const BACKGROUND_START: Color = Color::hsl(229., 0.64, 0.09);
@@ -49,11 +51,10 @@ pub fn materials_ui(
                     ..Default::default()
                 },))
                 .with_children(|cards| {
-                    for (name, material_img, material_amount) in cards_data {
+                    for (name, material_img) in cards_data {
                         cards.spawn(material_individual_card(
                             name,
                             material_img,
-                            material_amount,
                             &game_fonts.inter_bold,
                         ));
                     }
@@ -66,7 +67,6 @@ const MATERIAL_CARDS_BACKGROUND: Color = Color::hsl(231.2, 0.63, 0.11);
 fn material_individual_card(
     material_name: &'static str,
     material_image: Handle<Image>,
-    material_amount: i32,
     inter_bold: &Handle<Font>,
 ) -> impl Bundle {
     (
@@ -93,7 +93,7 @@ fn material_individual_card(
             (
                 Node {
                     width: percent(90),
-                    height: percent(55),
+                    height: percent(75),
                     ..Default::default()
                 },
                 ImageNode {
@@ -110,15 +110,6 @@ fn material_individual_card(
                 },
                 TextColor(Color::WHITE),
             ),
-            (
-                Text::new(material_amount.to_string()),
-                TextFont {
-                    font_size: px(13).into(),
-                    font: inter_bold.into(),
-                    ..Default::default()
-                },
-                TextColor(Color::WHITE),
-            )
         ],
     )
 }

@@ -2,7 +2,7 @@ use bevy::{ecs::system::IntoResult, prelude::*, ui::debug::print_ui_layout_tree}
 
 use crate::{
     GameState, core::game_fonts::fonts::GameFonts,
-    game_brief::materials::materials_plugin::Materials,
+    game_brief::materials::materials_resource::Materials,
 };
 
 pub struct DialogBoxPlugin;

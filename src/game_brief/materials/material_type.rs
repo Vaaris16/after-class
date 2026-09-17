@@ -2,7 +2,7 @@ use strum::EnumIter;
 
 use crate::game_brief::materials::material_effect::MaterialEffect;
 
-#[derive(EnumIter)]
+#[derive(EnumIter, Debug, Clone, PartialEq)]
 pub enum MaterialType {
     AetherCrystal,
     Moonstone,

@@ -12,6 +12,9 @@ const BACKGROUND_END: Color = Color::hsl(235., 0.64, 0.14);
 
 const MATERIALS_UI_BORDER_COLOR: Color = Color::hsl(262., 0.9, 0.61);
 
+#[derive(Component)]
+pub struct MaterialUi;
+
 pub fn materials_ui(
     mut commands: Commands,
     materials: Res<Materials>,
@@ -21,6 +24,7 @@ pub fn materials_ui(
     let cards_data = materials.get_card_data(&m_image);
     commands
         .spawn((
+            MaterialUi,
             Node {
                 width: px(550),
                 height: px(375),

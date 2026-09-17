@@ -9,16 +9,12 @@ pub struct DialogBoxPlugin;
 
 impl Plugin for DialogBoxPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(GameState::GameBrief),
-            (spawn_dialog_box, assign_materials_to_user),
-        );
+        app.add_systems(OnEnter(GameState::GameBrief), spawn_dialog_box);
     }
 }
 
-fn assign_materials_to_user(mut materials: ResMut<Materials>) {
-    materials.assign_materials();
-}
+#[derive(Component)]
+pub struct DialogBox;
 
 fn spawn_dialog_box(
     mut commands: Commands,
@@ -26,6 +22,7 @@ fn spawn_dialog_box(
     game_fonts: Res<GameFonts>,
 ) {
     commands.spawn((
+        DialogBox,
         Node {
             width: px(450),
             height: px(250),

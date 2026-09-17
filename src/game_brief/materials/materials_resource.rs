@@ -8,7 +8,7 @@ use crate::game_brief::materials::{
 
 #[derive(Resource, Default)]
 pub struct Materials {
-    assigned_materials: Vec<MaterialType>,
+    pub assigned_materials: Vec<MaterialType>,
 }
 
 impl Materials {

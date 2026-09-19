@@ -33,14 +33,12 @@ impl MaterialType {
             Self::AetherCrystal => MaterialEffect {
                 health_effect: 5.,
                 combat: -2.,
-                shield: 1.,
                 ..Default::default()
             },
 
             Self::Moonstone => MaterialEffect {
                 health_effect: 3.,
                 speed: -1.,
-                shield: 4.,
                 ..Default::default()
             },
 
@@ -48,34 +46,29 @@ impl MaterialType {
                 health_effect: -2.,
                 combat: 6.,
                 speed: 1.,
-                shield: -1.,
             },
 
             Self::VoidShard => MaterialEffect {
                 health_effect: -1.,
                 combat: 4.,
                 speed: 3.,
-                shield: -2.,
             },
 
             Self::StormCrystal => MaterialEffect {
                 health_effect: -2.,
                 combat: 2.,
                 speed: 5.,
-                shield: -1.,
             },
 
             Self::FrostCrystal => MaterialEffect {
                 health_effect: 2.,
                 speed: -2.,
-                shield: 5.,
                 ..Default::default()
             },
 
             Self::LumenShard => MaterialEffect {
                 health_effect: 6.,
                 combat: -3.,
-                shield: 2.,
                 ..Default::default()
             },
 
@@ -83,7 +76,6 @@ impl MaterialType {
                 health_effect: 2.,
                 combat: 3.,
                 speed: 2.,
-                shield: 2.,
             },
         }
     }

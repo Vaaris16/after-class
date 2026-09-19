@@ -3,6 +3,7 @@ use bevy::prelude::*;
 use crate::{
     GameState,
     crafting_screen::{
+        player_attributes::player_attributes_plugin::PlayerAttributePlugin,
         player_materials::player_materials_plugin::PlayerMaterialsPlugin,
         potion::potion_plugin::PotionPlugin,
     },
@@ -21,7 +22,7 @@ impl Plugin for CraftingScreenPlugin {
         );
         app.add_systems(OnEnter(GameState::CraftingScreen), set_bg)
             .add_systems(Update, resize_bg.in_set(CraftingScreenSet))
-            .add_plugins((PotionPlugin, PlayerMaterialsPlugin));
+            .add_plugins((PotionPlugin, PlayerMaterialsPlugin, PlayerAttributePlugin));
     }
 }
 

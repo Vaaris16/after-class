@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::{
-    core::game_fonts::fonts::GameFonts,
+    GameState, core::game_fonts::fonts::GameFonts,
     crafting_screen::player_attributes::player_attributes_plugin::PlayerAttributesPreview,
 };
 

@@ -21,14 +21,15 @@ pub struct PlayerMaterialsPlugin;
 
 impl Plugin for PlayerMaterialsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(
-            OnEnter(GameState::CraftingScreen),
-            (assign_materials_to_user, player_materials_ui),
-        )
-        .add_systems(
-            Update,
-            (card_selection, update_number_of_selected_materials).in_set(CraftingScreenSet),
-        );
+        app.add_systems(OnEnter(GameState::CraftingScreen), assign_materials_to_user)
+            .add_systems(
+                OnEnter(GameState::CraftingScreen),
+                player_materials_ui.after(assign_materials_to_user),
+            )
+            .add_systems(
+                Update,
+                (card_selection, update_number_of_selected_materials).in_set(CraftingScreenSet),
+            );
     }
 }
 
@@ -49,6 +50,7 @@ fn player_materials_ui(
     material_image: Res<MaterialImagePath>,
     game_fonts: Res<GameFonts>,
 ) {
+    print!("rendered");
     let user_materials = &user_materials.assigned_materials;
     commands
         .spawn(Node {

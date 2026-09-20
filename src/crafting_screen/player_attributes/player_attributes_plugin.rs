@@ -1,10 +1,13 @@
 use bevy::prelude::*;
 
 use crate::{
-    crafting_screen::player_attributes::player_attributes_ui::{
-        set_attribute_values, spawn_player_attributes_ui,
+    GameState,
+    crafting_screen::{
+        crafting_screen_plugin::CraftingScreenSet,
+        player_attributes::player_attributes_ui::{
+            set_attribute_values, spawn_player_attributes_ui,
+        },
     },
-    game_brief::materials::material_type::MaterialType,
 };
 
 pub struct PlayerAttributePlugin;
@@ -13,8 +16,11 @@ impl Plugin for PlayerAttributePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<PlayerAttributes>()
             .init_resource::<PlayerAttributesPreview>()
-            .add_systems(Startup, spawn_player_attributes_ui)
-            .add_systems(Update, set_attribute_values);
+            .add_systems(
+                OnEnter(GameState::CraftingScreen),
+                spawn_player_attributes_ui,
+            )
+            .add_systems(Update, set_attribute_values.in_set(CraftingScreenSet));
     }
 }
 
@@ -53,9 +59,9 @@ impl Default for PlayerAttributes {
 }
 
 impl PlayerAttributes {
-    fn apply_effect(&mut self, m_t: MaterialType) {
-        self.health += m_t.material_effect().health_effect;
-        self.combat += m_t.material_effect().combat;
-        self.speed += m_t.material_effect().speed;
+    pub fn apply_effects(&mut self, health: f32, combat: f32, speed: f32) {
+        self.health = health;
+        self.combat = combat;
+        self.speed = speed;
     }
 }

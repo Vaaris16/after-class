@@ -13,9 +13,9 @@ mod splashscreen;
 
 #[derive(Default, States, Debug, Hash, PartialEq, Eq, Clone)]
 enum GameState {
+    #[default]
     SplashScreen,
     GameBrief,
-    #[default]
     CraftingScreen,
 }
 

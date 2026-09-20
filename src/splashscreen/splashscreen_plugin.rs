@@ -1,6 +1,9 @@
 use bevy::prelude::*;
 
-use crate::GameState::{self, SplashScreen};
+use crate::{
+    GameState::{self, SplashScreen},
+    core::game_fonts::fonts::GameFonts,
+};
 
 pub struct SplashScreenPlugin;
 
@@ -25,14 +28,13 @@ impl Plugin for SplashScreenPlugin {
 #[derive(Component)]
 struct SplashScreenComponent;
 
-fn spawn_splash_screen(mut commands: Commands) {
+fn spawn_splash_screen(mut commands: Commands, game_fonts: Res<GameFonts>) {
     commands.spawn((
         Node {
             width: percent(100),
             height: percent(100),
-            justify_content: JustifyContent::FlexStart,
+            justify_content: JustifyContent::Center,
             align_items: AlignItems::Center,
-            position_type: PositionType::Absolute,
             ..Default::default()
         },
         SplashScreenComponent,
@@ -45,19 +47,22 @@ fn spawn_splash_screen(mut commands: Commands) {
                 margin: UiRect::left(px(20)),
                 ..Default::default()
             },
-            children![splash_title(), start_button()],
+            children![splash_title(&game_fonts), start_button(&game_fonts)],
         )],
     ));
 }
 
-fn splash_title() -> impl Bundle {
+const SPLASH_TITLE_COLOR: Color = Color::hsl(30., 0.65, 0.96);
+
+fn splash_title(game_fonts: &GameFonts) -> impl Bundle {
     (
         Text::new("After Class"),
         TextFont {
-            font_size: px(90).into(),
+            font_size: px(100).into(),
+            font: game_fonts.lora_font_bold.clone().into(),
             ..Default::default()
         },
-        TextColor(Color::BLACK),
+        TextColor(SPLASH_TITLE_COLOR),
     )
 }
 
@@ -85,26 +90,38 @@ struct StartButton;
 #[derive(Component)]
 struct StartButtonText;
 
-fn start_button() -> impl Bundle {
+const START_BUTTON_BACKGROUND_COLOR: Color = Color::hsl(244., 0.33, 0.25);
+const START_BUTTON_BORDER_COLOR: Color = Color::hsl(267., 0.56, 0.77);
+const START_BUTTON_TEXT_COLOR: Color = Color::hsl(300., 0.08, 0.95);
+
+fn start_button(game_fonts: &GameFonts) -> impl Bundle {
     (
         Button,
         Node {
             justify_content: JustifyContent::Center,
             align_items: AlignItems::Center,
-            border_radius: BorderRadius::all(px(20)),
-            padding: UiRect::all(px(15)),
+            border_radius: BorderRadius::MAX,
+            padding: UiRect {
+                top: px(10),
+                bottom: px(10),
+                right: px(90),
+                left: px(90),
+            },
+            border: UiRect::all(px(3)),
             ..Default::default()
         },
         StartButton,
-        BackgroundColor(Color::BLACK),
+        BackgroundColor(START_BUTTON_BACKGROUND_COLOR),
+        BorderColor::all(START_BUTTON_BORDER_COLOR),
         children![(
             StartButtonText,
             Text::new("Start"),
             TextFont {
-                font_size: px(33).into(),
-                ..default()
+                font_size: px(27).into(),
+                font: game_fonts.kaisei_decol_bold.clone().into(),
+                ..Default::default()
             },
-            TextColor(Color::WHITE)
+            TextColor(START_BUTTON_TEXT_COLOR)
         )],
     )
 }
@@ -121,8 +138,8 @@ fn start_button_interactions(
                 button_text.0 = Color::BLACK;
             }
             Interaction::None => {
-                button_bg.0 = Color::BLACK;
-                button_text.0 = Color::WHITE;
+                button_bg.0 = START_BUTTON_BACKGROUND_COLOR;
+                button_text.0 = START_BUTTON_TEXT_COLOR;
             }
             Interaction::Pressed => {
                 game_state.set(GameState::GameBrief);

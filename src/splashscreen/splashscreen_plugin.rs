@@ -90,8 +90,12 @@ struct StartButton;
 #[derive(Component)]
 struct StartButtonText;
 
-const START_BUTTON_BACKGROUND_COLOR: Color = Color::hsl(244., 0.33, 0.25);
-const START_BUTTON_BORDER_COLOR: Color = Color::hsl(267., 0.56, 0.77);
+const START_BUTTON_BACKGROUND_COLOR: Color = Color::hsl(247., 0.31, 0.34);
+const START_BUTTON_BORDER_COLOR: Color = Color::hsl(265., 0.57, 0.79);
+
+const START_BUTTON_BACKGROUND_COLOR_HOVERED: Color = Color::hsl(244., 0.41, 0.56);
+const START_BUTTON_BORDER_COLOR_HOVERED: Color = Color::hsl(255., 0.7, 0.84);
+
 const START_BUTTON_TEXT_COLOR: Color = Color::hsl(300., 0.08, 0.95);
 
 fn start_button(game_fonts: &GameFonts) -> impl Bundle {
@@ -118,7 +122,7 @@ fn start_button(game_fonts: &GameFonts) -> impl Bundle {
             Text::new("Start"),
             TextFont {
                 font_size: px(27).into(),
-                font: game_fonts.kaisei_decol_bold.clone().into(),
+                font: game_fonts.lora_font_bold.clone().into(),
                 ..Default::default()
             },
             TextColor(START_BUTTON_TEXT_COLOR)
@@ -127,18 +131,23 @@ fn start_button(game_fonts: &GameFonts) -> impl Bundle {
 }
 
 fn start_button_interactions(
-    button: Query<(&Interaction, &mut BackgroundColor), (With<StartButton>, Changed<Interaction>)>,
+    button: Query<
+        (&Interaction, &mut BackgroundColor, &mut BorderColor),
+        (With<StartButton>, Changed<Interaction>),
+    >,
     mut button_text: Single<&mut TextColor, With<StartButtonText>>,
     mut game_state: ResMut<NextState<GameState>>,
 ) {
-    for (button_interactions, mut button_bg) in button {
+    for (button_interactions, mut button_bg, mut border_color) in button {
         match button_interactions {
             Interaction::Hovered => {
-                button_bg.0 = Color::WHITE;
-                button_text.0 = Color::BLACK;
+                button_bg.0 = START_BUTTON_BACKGROUND_COLOR_HOVERED;
+                *border_color = BorderColor::all(START_BUTTON_BORDER_COLOR_HOVERED);
+                button_text.0 = START_BUTTON_TEXT_COLOR;
             }
             Interaction::None => {
                 button_bg.0 = START_BUTTON_BACKGROUND_COLOR;
+                *border_color = BorderColor::all(START_BUTTON_BORDER_COLOR);
                 button_text.0 = START_BUTTON_TEXT_COLOR;
             }
             Interaction::Pressed => {

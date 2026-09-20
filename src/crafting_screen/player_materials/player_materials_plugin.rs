@@ -21,11 +21,7 @@ pub struct PlayerMaterialsPlugin;
 
 impl Plugin for PlayerMaterialsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::CraftingScreen), assign_materials_to_user)
-            .add_systems(
-                OnEnter(GameState::CraftingScreen),
-                player_materials_ui.after(assign_materials_to_user),
-            )
+        app.add_systems(OnEnter(GameState::CraftingScreen), player_materials_ui)
             .add_systems(
                 Update,
                 (card_selection, update_number_of_selected_materials).in_set(CraftingScreenSet),
@@ -44,23 +40,28 @@ struct NumberOfSelectedMaterialText;
 
 const MATERIAL_UI_TEXT_COLOR: Color = Color::hsl(307., 0.14, 0.74);
 
+#[derive(Component)]
+pub struct PlayerMaterialsUi;
+
 fn player_materials_ui(
     mut commands: Commands,
     user_materials: Res<Materials>,
     material_image: Res<MaterialImagePath>,
     game_fonts: Res<GameFonts>,
 ) {
-    print!("rendered");
     let user_materials = &user_materials.assigned_materials;
     commands
-        .spawn(Node {
-            width: percent(100),
-            height: percent(100),
-            flex_direction: FlexDirection::Column,
-            justify_content: JustifyContent::FlexStart,
-            align_items: AlignItems::Center,
-            ..Default::default()
-        })
+        .spawn((
+            Node {
+                width: percent(100),
+                height: percent(100),
+                flex_direction: FlexDirection::Column,
+                justify_content: JustifyContent::FlexStart,
+                align_items: AlignItems::Center,
+                ..Default::default()
+            },
+            PlayerMaterialsUi,
+        ))
         .with_children(|parent| {
             parent.spawn((
                 Node {

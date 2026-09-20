@@ -28,7 +28,7 @@ impl Plugin for BrewPotionPlugin {
 }
 
 #[derive(Component)]
-struct BrewPotionButton;
+pub struct BrewPotionButton;
 
 #[derive(Component)]
 struct BrewPotionButtonText;
@@ -77,6 +77,7 @@ fn brew_button_interaction(
     mut player_attributes: ResMut<PlayerAttributes>,
     player_attributes_preview: Res<PlayerAttributesPreview>,
     potion: Res<Potion>,
+    mut state: ResMut<NextState<GameState>>,
 ) {
     let (interaction_button, mut border_color) = button.into_inner();
     let press_button = if potion.materials.len() == 4 {
@@ -93,6 +94,7 @@ fn brew_button_interaction(
                     player_attributes_preview.speed,
                 );
             }
+            state.set(GameState::PreFight);
         }
         Interaction::Hovered => {
             if press_button {

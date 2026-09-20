@@ -7,6 +7,7 @@ pub struct GameFonts {
     pub kaisei_decol_regular: Handle<Font>,
 
     pub lora_font_bold: Handle<Font>,
+    pub lora_font_medium: Handle<Font>,
 
     pub inter_bold: Handle<Font>,
 }
@@ -20,7 +21,8 @@ impl FromWorld for GameFonts {
             kaisei_decol_medium: asset_server.load("fonts/kaisei_decol/KaiseiDecol-Medium.ttf"),
             kaisei_decol_regular: asset_server.load("fonts/kaisei_decol/KaiseiDecol-Regular.ttf"),
             inter_bold: asset_server.load("fonts/inter/static/Inter_28pt-Bold.ttf"),
-            lora_font_bold: asset_server.load("fonts/lora_font/static/Lora-Medium.ttf"),
+            lora_font_bold: asset_server.load("fonts/lora_font/static/Lora-Bold.ttf"),
+            lora_font_medium: asset_server.load("fonts/lora_font/static/Lora-Medium.ttf"),
         }
     }
 }

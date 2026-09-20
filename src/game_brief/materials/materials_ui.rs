@@ -1,4 +1,8 @@
-use bevy::prelude::*;
+use bevy::{
+    ecs::system::IntoResult,
+    image::{TextureError::FormatRequiresTranscodingError, TextureFormatPixelInfo},
+    prelude::*,
+};
 
 use crate::{
     core::game_fonts::fonts::GameFonts,
@@ -27,13 +31,16 @@ pub fn materials_ui(
             MaterialUi,
             Node {
                 width: px(550),
-                height: px(375),
+                height: px(400),
                 position_type: PositionType::Absolute,
-                top: px(20),
+                top: px(100),
                 right: px(40),
                 border_radius: BorderRadius::all(px(20)),
                 border: UiRect::all(px(2)),
                 padding: UiRect::all(px(13)),
+                flex_direction: FlexDirection::Column,
+                align_items: AlignItems::Center,
+                row_gap: px(20),
                 ..Default::default()
             },
             BorderColor::all(MATERIALS_UI_BORDER_COLOR),
@@ -43,6 +50,15 @@ pub fn materials_ui(
             ])),
         ))
         .with_children(|parent| {
+            parent.spawn((
+                Text::new("Materials"),
+                TextFont {
+                    font_size: px(40).into(),
+                    font: game_fonts.kaisei_decol_bold.clone().into(),
+                    ..Default::default()
+                },
+                TextColor(Color::WHITE),
+            ));
             parent
                 .spawn((Node {
                     width: percent(100),

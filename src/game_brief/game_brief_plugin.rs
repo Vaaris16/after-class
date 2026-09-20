@@ -13,13 +13,17 @@ use crate::{
 
 pub struct GameBriefplugin;
 
+#[derive(SystemSet, Hash, PartialEq, Eq, Clone, Debug)]
+struct GameBriefSet;
+
 impl Plugin for GameBriefplugin {
     fn build(&self, app: &mut App) {
+        app.configure_sets(Update, GameBriefSet.run_if(in_state(GameState::GameBrief)));
         app.add_systems(OnEnter(GameState::GameBrief), set_background)
-            //            .add_systems(Startup, assign_materials_to_user)
-            .add_systems(Update, resize_bg)
-            .add_plugins((DialogBoxPlugin, MaterialsPlugin))
-            .add_systems(OnExit(GameState::GameBrief), cleanup_gamebreif_ui);
+            .add_systems(Startup, assign_materials_to_user)
+            .add_systems(Update, (resize_bg, handle_continue).in_set(GameBriefSet))
+            .add_systems(OnExit(GameState::GameBrief), cleanup_gamebreif_ui)
+            .add_plugins((DialogBoxPlugin, MaterialsPlugin));
     }
 }
 
@@ -53,4 +57,10 @@ fn cleanup_gamebreif_ui(
 
 pub fn assign_materials_to_user(mut materials: ResMut<Materials>) {
     materials.assign_materials();
+}
+
+fn handle_continue(user_input: Res<ButtonInput<KeyCode>>, mut state: ResMut<NextState<GameState>>) {
+    if user_input.just_pressed(KeyCode::Space) {
+        state.set(GameState::CraftingScreen);
+    }
 }

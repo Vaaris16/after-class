@@ -2,13 +2,14 @@ use bevy::{prelude::*, window::WindowMode};
 
 use crate::{
     core::core_plugin::CorePlugin, crafting_screen::crafting_screen_plugin::CraftingScreenPlugin,
-    game_brief::game_brief_plugin::GameBriefplugin,
+    game_brief::game_brief_plugin::GameBriefplugin, pre_fight::pre_fight_plugin::PreFightPlugin,
     splashscreen::splashscreen_plugin::SplashScreenPlugin,
 };
 
 mod core;
 mod crafting_screen;
 mod game_brief;
+mod pre_fight;
 mod splashscreen;
 
 #[derive(Default, States, Debug, Hash, PartialEq, Eq, Clone)]
@@ -17,6 +18,7 @@ enum GameState {
     SplashScreen,
     GameBrief,
     CraftingScreen,
+    PreFight,
 }
 
 fn main() {
@@ -32,6 +34,7 @@ fn main() {
             SplashScreenPlugin,
             GameBriefplugin,
             CraftingScreenPlugin,
+            PreFightPlugin,
             CorePlugin,
         ))
         .init_state::<GameState>()

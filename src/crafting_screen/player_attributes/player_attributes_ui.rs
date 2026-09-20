@@ -7,6 +7,9 @@ use crate::{
 
 const PLAYER_ATTRIBUTES_COLOR: Color = Color::hsl(22., 0.88, 0.08);
 
+#[derive(Component)]
+pub struct PlayerAttributesUi;
+
 pub fn spawn_player_attributes_ui(
     game_fonts: Res<GameFonts>,
     mut commands: Commands,
@@ -28,6 +31,7 @@ pub fn spawn_player_attributes_ui(
             image: asset_server.load("torn_paper.png"),
             ..Default::default()
         },
+        PlayerAttributesUi,
         children![
             (
                 Node {

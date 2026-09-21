@@ -91,7 +91,7 @@ fn end_pre_fight(
     timer.0.tick(time.delta());
 
     if timer.0.is_finished() {
-        state.set(GameState::SplashScreen);
+        state.set(GameState::Fight);
     }
 }
 

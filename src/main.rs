@@ -1,4 +1,4 @@
-use bevy::{prelude::*, window::WindowMode};
+use bevy::{camera_controller::free_camera::FreeCameraPlugin, prelude::*, window::WindowMode};
 
 use crate::{
     core::core_plugin::CorePlugin, crafting_screen::crafting_screen_plugin::CraftingScreenPlugin,
@@ -16,11 +16,11 @@ mod splashscreen;
 
 #[derive(Default, States, Debug, Hash, PartialEq, Eq, Clone)]
 enum GameState {
-    #[default]
     SplashScreen,
     GameBrief,
     CraftingScreen,
     PreFight,
+    #[default]
     Fight,
 }
 
@@ -33,6 +33,11 @@ fn main() {
             }),
             ..Default::default()
         }))
+        .insert_resource(GlobalAmbientLight {
+            color: Color::srgb(0.6, 0.7, 0.8),
+            brightness: 300.0,
+            affects_lightmapped_meshes: true,
+        })
         .add_plugins((
             SplashScreenPlugin,
             GameBriefplugin,
@@ -40,6 +45,7 @@ fn main() {
             PreFightPlugin,
             FightPlugin,
             CorePlugin,
+            FreeCameraPlugin,
         ))
         .init_state::<GameState>()
         .run();
